@@ -15,7 +15,8 @@ class MovieController extends Controller
     public function index()
     {
         //
-        return view('movies.index');
+        $movies=Movie::all();
+        return view('movies.index',['movies'=>$movies]);
     }
 
     /**
@@ -38,7 +39,24 @@ class MovieController extends Controller
     public function store(Request $request)
     {
         //
-        dd($request);
+
+
+        $request->validate([
+            "title"=>"required",
+            "release_date"=>["required","date"],
+            "running_time"=>["required","numeric"],
+            "language"=>"required",
+            "release_country"=>"required",
+        ]);
+        $movie=new Movie();
+        $movie->title=$request->title;
+        $movie->release_date=$request->release_date;
+        $movie->running_time=$request->running_time;
+        $movie->language=$request->language;
+        $movie->release_country=$request->release_country;
+        $movie->user_id=auth()->user()->id;
+        $movie->save();
+        return redirect()->route("movies.index")->with("success","New Movie Added!");
     }
 
     /**
@@ -50,6 +68,7 @@ class MovieController extends Controller
     public function show(Movie $movie)
     {
         //
+        return view('movies.show', compact('movie'));
     }
 
     /**
@@ -61,6 +80,7 @@ class MovieController extends Controller
     public function edit(Movie $movie)
     {
         //
+        return view('movies.edit', compact('movie'));
     }
 
     /**
@@ -73,6 +93,16 @@ class MovieController extends Controller
     public function update(Request $request, Movie $movie)
     {
         //
+        $request->validate([
+            "title"=>"required",
+            "release_date"=>["required","date"],
+            "running_time"=>["required","numeric"],
+            "language"=>"required",
+            "release_country"=>"required",
+        ]);
+        $movie->update($request->all());
+        return redirect()->route('movies.index')->with('success',"Movie Updated!");
+
     }
 
     /**
@@ -84,5 +114,7 @@ class MovieController extends Controller
     public function destroy(Movie $movie)
     {
         //
+        $movie->delete();
+        return redirect()->route('movies.index')->with('success',"Movie Deleted!");
     }
 }

@@ -18,4 +18,9 @@ class Movie extends Model
         'language',
         'release_country'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
