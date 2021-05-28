@@ -26,5 +26,6 @@
     </div>
         <input class="block bg-teal hover:bg-teal-dark text-black uppercase text-lg mx-auto p-4 rounded" type="submit" value="Add Movie">
         </form>
+        <a href="{{route('movies.index')}}"><button class="block bg-blue-200 hover:bg-red-100 text-black uppercase text-lg mx-auto p-4 rounded">Go To Index</button></a>
     </div>
 @endsection
